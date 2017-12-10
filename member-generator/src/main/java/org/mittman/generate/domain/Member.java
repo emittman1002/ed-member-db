@@ -7,10 +7,7 @@ import java.time.LocalDate;
  * @author Edward Mittman
  *
  */
-public interface Member<I> {
-	I getMemberId();
-	void setMemberId(I memberId);
-	
+public interface Member<I> extends Identifiable<I> {
 	String getFirstName();
 	void setFirstName(String firstName);
 	

@@ -6,9 +6,13 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-	org.mittman.generate.impl.DateOfBirthGeneratorTest.class,
-	org.mittman.generate.impl.LongIdGeneratorTest.class,
-	org.mittman.generate.impl.SsnGeneratorTest.class
+	org.mittman.generate.DateOfBirthGeneratorTest.class,
+	org.mittman.generate.LongIdGeneratorTest.class,
+	org.mittman.generate.SsnGeneratorTest.class,
+	org.mittman.generate.PersonNameGeneratorTest.class,
+	org.mittman.generate.GroupMemberGeneratorTest.class,
+	org.mittman.generate.MemberGeneratorTest.class,
+	org.mittman.generate.GroupMemberGeneratorTest.class
 })
 public class AllTests {
 

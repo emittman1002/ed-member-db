@@ -5,10 +5,7 @@ package org.mittman.generate.domain;
  * @author Edward Mittman
  *
  */
-public interface Group<I> {
-	I getGroupId();
-	void setGroupId(I groupId);
-	
+public interface Group<I> extends Identifiable<I> {
 	String getName();
 	void setName(String name);
 	
