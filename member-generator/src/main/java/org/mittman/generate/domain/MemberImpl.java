@@ -1,5 +1,6 @@
 package org.mittman.generate.domain;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 import lombok.Getter;
@@ -12,19 +13,22 @@ import lombok.Setter;
  *
  * @param <I>
  */
-public class MemberImpl<I> implements Member<I> {
-	@Getter@Setter
+@Getter@Setter
+public class MemberImpl<I> implements Member<I>, Serializable {
+	private static final long serialVersionUID = 1L;
+
 	private I id;
-	@Getter@Setter
-	private PersonName personName;
-	@Getter@Setter
+	private String firstName;
+	private String middleName;
+	private String lastName;
 	private String ssn;
-	@Getter@Setter
 	private LocalDate dateOfBirth;
 
 
 	public MemberImpl() {
-		personName = new PersonName();
+		firstName = "";
+		middleName = "";
+		lastName = "";
 	}
 	
 	@Override
@@ -56,35 +60,50 @@ public class MemberImpl<I> implements Member<I> {
 	}
 
 	@Override
-	public String toString() {
-		return "MemberImpl [id=" + id + ", firstName=" + getFirstName() + ", middleName=" + getMiddleName()
-				+ ", lastName=" + getLastName() + "]";
-	}
-
-	@Override
 	public String getFirstName() {
-		return personName.getFirstName();
+		return firstName;
 	}
 	@Override
 	public void setFirstName(String firstName) {
-		personName.setFirstName(firstName);
+		if (firstName!=null) {
+			this.firstName = firstName;
+		}
+		else {
+			this.firstName = "";
+		}
 	}
 
 	@Override
 	public String getMiddleName() {
-		return personName.getMiddleName();
+		return middleName;
 	}
 	@Override
 	public void setMiddleName(String middleName) {
-		personName.setMiddleName(middleName);
+		if (middleName!=null) {
+			this.middleName = middleName;
+		}
+		else {
+			this.middleName = "";
+		}
 	}
 
 	@Override
 	public String getLastName() {
-		return personName.getLastName();
+		return lastName;
 	}
 	@Override
 	public void setLastName(String lastName) {
-		personName.setLastName(lastName);
+		if (lastName!=null) {
+			this.lastName = lastName;
+		}
+		else {
+			this.lastName = "";
+		}
+	}
+	
+	@Override
+	public String toString() {
+		return getClass().getName() + "[id=" + id + ", firstName=" + getFirstName() + ", middleName=" + getMiddleName()
+				+ ", lastName=" + getLastName() + ", ssn=" + getSsn() + ", dateOfBirth=" + getDateOfBirth() + "]";
 	}
 }

@@ -3,18 +3,18 @@ package org.mittman.generate;
 import org.mittman.generate.domain.GroupMember;
 import org.mittman.generate.domain.GroupMemberImpl;
 
-import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
- * A generator for GroupMember objects
+ * A generator for GroupMember objects.
  * 
  * @author Edward Mittman
  *
- * @param <M>
- * @param <G>
+ * @param <M> the type of the id for members
+ * @param <G> the type of the id for groups
  */
-@Getter(AccessLevel.PACKAGE)
+@Getter@Setter
 public class GroupMemberGenerator<M,G> extends AbstractGenerator<GroupMember<M,G>> {
 	private MemberGenerator<M> memberGenerator;
 	private GroupGenerator<G> groupGenerator;
@@ -35,4 +35,24 @@ public class GroupMemberGenerator<M,G> extends AbstractGenerator<GroupMember<M,G
 		object.setGroup( groupGenerator.generate() );
 	}
 
+	public boolean isValidSsnsOnly() {
+		return memberGenerator.isValidSsnOnly();
+	}
+	public void setValidSsnsOnly(boolean validSsnsOnly) {
+		memberGenerator.setValidSsnOnly(validSsnsOnly);
+	}
+	
+	public boolean isUseIdForMemberNames() {
+		return memberGenerator.isUseIdToGenerateNames();
+	}
+	public void setUseIdForMemberNames(boolean useIdForMemberNames) {
+		memberGenerator.setUseIdToGenerateNames(useIdForMemberNames);
+	}
+	
+	public boolean isUseIdForGroupNamesAndNumbers() {
+		return groupGenerator.isUseIdForNamesAndNumbers();
+	}
+	public void setUseIdForGroupNamesAndNumbers(boolean useIdForGroupNamesAndNumbers) {
+		groupGenerator.setUseIdForNamesAndNumbers(useIdForGroupNamesAndNumbers);
+	}
 }

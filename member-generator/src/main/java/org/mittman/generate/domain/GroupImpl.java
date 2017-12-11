@@ -36,4 +36,9 @@ public class GroupImpl<I> implements Group<I> {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return getClass().getName() + "[id=" + id + ", name=" + name + ", groupNumber=" + groupNumber + "]";
+	}
+
 }

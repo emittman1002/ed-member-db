@@ -181,11 +181,11 @@ public class GeneratorTestHelper {
 	/**
 	 * Verify the constructor of a group generator
 	 * @param gen
-	 * @param clazz
+	 * @param idClass
 	 */
-	public void verifyGroupGeneratorConstructor(GroupGenerator<?> gen, Class<?> clazz) {
+	public void verifyGroupGeneratorConstructor(GroupGenerator<?> gen, Class<?> idClass) {
 		assertNotNull(gen.getIdGenerator());
-		assertEquals(clazz, gen.getIdClass());
+		assertEquals(idClass, gen.getIdClass());
 		assertNotNull(gen.getNameGenerator());
 		assertNotNull(gen.getGroupNumberGenerator());
 		assertFalse(gen.isUseIdForNamesAndNumbers());

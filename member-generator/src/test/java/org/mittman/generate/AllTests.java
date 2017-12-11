@@ -12,7 +12,9 @@ import org.junit.runners.Suite.SuiteClasses;
 	org.mittman.generate.PersonNameGeneratorTest.class,
 	org.mittman.generate.GroupMemberGeneratorTest.class,
 	org.mittman.generate.MemberGeneratorTest.class,
-	org.mittman.generate.GroupMemberGeneratorTest.class
+	org.mittman.generate.GroupMemberGeneratorTest.class,
+	org.mittman.generate.strategy.SingleGroupingStrategyTest.class,
+	org.mittman.generate.GroupingGroupGeneratorTest.class
 })
 public class AllTests {
 

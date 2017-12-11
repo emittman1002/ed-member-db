@@ -3,8 +3,17 @@ package org.mittman.generate.domain;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Implementation of a GroupMember
+ * 
+ * @author Edward Mittman
+ *
+ * @param <M>
+ * @param <G>
+ */
+@Getter@Setter
 public class GroupMemberImpl<M, G> extends MemberImpl<M> implements GroupMember<M, G> {
-	@Getter@Setter
+	private static final long serialVersionUID = 1L;
 	private Group<G> group;
 	
 	
@@ -37,11 +46,10 @@ public class GroupMemberImpl<M, G> extends MemberImpl<M> implements GroupMember<
 	@Override
 	public String toString() {
 		String s = super.toString();
-		s = getClass().getSimpleName() + s.substring( s.indexOf('[') );
 		
 		String g;
 		if (group==null) {
-			g = "[null]";
+			g = Group.class.getName() + "[null]";
 		}
 		else {
 			g = group.toString();
