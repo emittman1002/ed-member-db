@@ -1,5 +1,7 @@
 package org.mittman.generate.strategy;
 
+import java.util.Properties;
+
 /**
  * A strategy for grouping objects
  *
@@ -28,6 +30,12 @@ package org.mittman.generate.strategy;
  * @author Edward Mittman
  */
 public interface GroupingStrategy<G,M> {
+	/**
+	 * Initialize the object from a set of properties
+	 * @param properties
+	 */
+	void initialize(Properties properties);
+	
 	/**
 	 * Determine the group for a member.
 	 * 

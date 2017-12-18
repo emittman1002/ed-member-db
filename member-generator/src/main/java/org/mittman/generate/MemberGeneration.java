@@ -6,10 +6,13 @@ import java.util.List;
 import org.mittman.generate.domain.Group;
 import org.mittman.generate.domain.GroupMember;
 import org.mittman.generate.domain.Member;
+import org.mittman.generate.format.GeneratedObjectFormatter;
 import org.mittman.generate.strategy.GroupingStrategy;
 import org.mittman.generate.strategy.IndividualGroupingStrategy;
 import org.mittman.generate.strategy.RoundRobinGroupingStrategy;
 import org.mittman.generate.strategy.SingleGroupingStrategy;
+import org.mittman.generate.write.OutputWriter;
+import org.mittman.generate.write.PrintStreamOutputWriter;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -29,23 +32,47 @@ public class MemberGeneration {
 	private boolean useIdsForGroupNamesAndNumbers;
 	@Getter@Setter
 	private int numberOfGroups;
-	
+	@Getter@Setter
+	private int numberOfMembersToGenerate;
+	@Getter@Setter
+	private String propertyFilename;
+	@Getter@Setter
+	private String dbPropertyFilename;
+
+	/**
+	 * A strategy for grouping objects that are generated.
+	 * The default strategy is to place all objects in
+	 * the same group
+	 */
 	private String groupingStrategyName = "single";
+	/**
+	 * Optional formatting of the objects
+	 * that are generated.  Default behavior
+	 * is to call the object's toString() method
+	 */
+	@Getter@Setter
+	private GeneratedObjectFormatter<GroupMember<Long,Long>> outputFormatter;
+	@Getter@Setter
+	/**
+	 * Where output will be sent to.  Defaults
+	 * to System.out
+	 */
+	private OutputWriter<GroupMember<Long,Long>> outputWriter;
 	
 	
 	public MemberGeneration() {
-		
-		
+		numberOfMembersToGenerate = 10;
+		outputWriter = new PrintStreamOutputWriter<GroupMember<Long,Long>>();
+		propertyFilename = getClass().getSimpleName().toLowerCase() + ".properties";
 	}
 
 	/**
 	 * Generate the members
 	 * 
 	 * @param numMembers
-	 * @return
 	 * @throws Exception
 	 */
-	public List<GroupMember<Long,Long>> generate(int numMembers) throws Exception {
+	public void generate() throws Exception {
 		GroupMemberGenerator<Long,Long> generator =
 				new GroupMemberGenerator<Long,Long>(Long.class, Long.class);
 		
@@ -61,14 +88,14 @@ public class MemberGeneration {
 		generator.setGroupGenerator(groupGenerator);
 		
 		// Generate the members
-		List<GroupMember<Long,Long>> mems = new ArrayList<>(numMembers);
+		List<GroupMember<Long,Long>> mems = new ArrayList<GroupMember<Long,Long>>(2);
 		
-		for(int i=0; i<numMembers; ++i) {
+		for(int i=0; i<numberOfMembersToGenerate; ++i) {
 			GroupMember<Long,Long> mem = generator.generate();
 			mems.add(mem);
+			outputWriter.write(mems);
+			mems.clear();
 		}
-		
-		return mems;
 	}
 	
 	private GroupingStrategy<Group<Long>,Member<Long>> groupingStrategy() {
@@ -98,14 +125,12 @@ public class MemberGeneration {
 	 * @param args
 	 * @return
 	 */
-	public int parseArgs(String []args) {
-		// Default number of members to generate
-		int ret = 100;
-		
+	public void parseArgs(String []args) throws Exception {
+		// Override with anything specified on the command line
 		for(String arg: args) {
 			Integer iVal = intValue(arg, "numMems=");
 			if (iVal!=null) {
-				ret = iVal.intValue();
+				numberOfMembersToGenerate = iVal.intValue();
 			}
 
 			iVal = intValue(arg, "numGroups=");
@@ -129,9 +154,31 @@ public class MemberGeneration {
 					groupingStrategyName = "individual";
 				}
 			}
+			
+			sVal = stringValue(arg, "formatterClass=");
+			if (sVal!=null) {
+				@SuppressWarnings("unchecked")
+				Class<GeneratedObjectFormatter<GroupMember<Long,Long>>> fmtClazz = (Class<GeneratedObjectFormatter<GroupMember<Long,Long>>>) getClass().getClassLoader().loadClass(sVal);
+				outputFormatter = fmtClazz.newInstance();
+			}
+			
+			sVal = stringValue(arg, "outputWriterClass=");
+			if (sVal!=null) {
+				@SuppressWarnings("unchecked")
+				Class<GeneratedObjectFormatter<GroupMember<Long,Long>>> fmtClazz = (Class<GeneratedObjectFormatter<GroupMember<Long,Long>>>) getClass().getClassLoader().loadClass(sVal);
+				outputFormatter = fmtClazz.newInstance();
+			}
+			
+			sVal = stringValue(arg, "propFile=");
+			if (sVal!=null) {
+				propertyFilename = sVal;
+			}
+			
+			sVal = stringValue(arg, "dbPropFile=");
+			if (sVal!=null) {
+				dbPropertyFilename = sVal;
+			}
 		}
-		
-		return ret;
 	}
 	
 	private Integer intValue(String arg, String target) {
@@ -157,14 +204,8 @@ public class MemberGeneration {
 		MemberGeneration generation = new MemberGeneration();
 
 		try {
-			int numMems = generation.parseArgs(args);
-			
-			List<GroupMember<Long,Long>> mems = generation.generate(numMems);
-			
-			System.out.println("Members:");
-			for(GroupMember<Long,Long> m: mems) {
-				System.out.println(m);
-			}
+			generation.parseArgs(args);
+			generation.generate();
 		}
 		catch(Exception e) {
 			e.printStackTrace();

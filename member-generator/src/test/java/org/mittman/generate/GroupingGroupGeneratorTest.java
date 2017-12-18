@@ -2,6 +2,8 @@ package org.mittman.generate;
 
 import static org.junit.Assert.*;
 
+import java.util.Properties;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mittman.generate.domain.Group;
@@ -70,6 +72,11 @@ public class GroupingGroupGeneratorTest {
 		@Override
 		public void removed(Group<Long> group, Object member) throws UnsupportedGroupingException {
 			// ignored
+		}
+
+		@Override
+		public void initialize(Properties properties) {
+			// initialize
 		}
 		
 	}

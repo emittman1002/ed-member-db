@@ -2,6 +2,7 @@ package org.mittman.generate.strategy;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -86,6 +87,11 @@ public class RoundRobinGroupingStrategy<G, M> implements GroupingStrategy<G, M> 
 	@Override
 	public void removed(G group, M member) throws UnsupportedGroupingException {
 		// Do nothing
+	}
+	
+	@Override
+	public void initialize(Properties properties) {
+		// nothing to initialize
 	}
 
 }

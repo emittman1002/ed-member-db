@@ -1,5 +1,7 @@
 package org.mittman.generate.strategy;
 
+import java.util.Properties;
+
 /**
  * A grouping strategy that puts every member in a separate group
  * 
@@ -23,6 +25,11 @@ public class IndividualGroupingStrategy<G, M> implements GroupingStrategy<G, M> 
 	@Override
 	public void removed(G group, M member) throws UnsupportedGroupingException {
 		// ignore
+	}
+
+	@Override
+	public void initialize(Properties properties) {
+		// nothing to initialize
 	}
 
 }

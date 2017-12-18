@@ -1,0 +1,65 @@
+package org.mittman.generate.db;
+/**
+ * Info related to a JDBC Connection and its usage
+ * 
+ * @author Edward Mittman
+ *
+ */
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+/**
+ * State needed to work with a JDBC statement
+ * that doesn't use parameters
+ * 
+ * @author Edward Mittman
+ *
+ */
+public class SimpleJdbcQuery extends AbstractJdbcQuery<Statement> {
+
+	/**
+	 * Create a statement from the connection
+	 * @param connection
+	 */
+	public SimpleJdbcQuery(Connection connection) {
+		super(connection);
+	}
+	
+	/**
+	 * Prepare a statement used with a parameterized query.
+	 * Return the prepared statement, ready to have parameters
+	 * set for an execution
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	@Override
+	public Statement prepare() throws Exception {
+		setStatement( getConnection().createStatement() );
+		return getStatement();
+	}
+	
+	/**
+	 * Execute a query and return any results
+	 * 
+	 * @param sql
+	 * @return
+	 * @throws Exception
+	 */
+	@Override
+	public ResultSet execute() throws Exception {
+		switch( getQueryType() ) {
+		case SELECT:
+			setResultSet( getStatement().executeQuery( getSql() ) );
+			break;
+		default:
+			getStatement().executeUpdate( getSql() );
+			setResultSet( getStatement().getGeneratedKeys() );
+			break;
+		};
+
+		return getResultSet();
+	}
+
+}

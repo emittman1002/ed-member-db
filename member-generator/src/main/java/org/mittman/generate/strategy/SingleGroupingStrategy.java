@@ -1,5 +1,7 @@
 package org.mittman.generate.strategy;
 
+import java.util.Properties;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -38,5 +40,10 @@ public class SingleGroupingStrategy<G,M> implements GroupingStrategy<G,M> {
 	@Override
 	public void removed(G group, M member) throws UnsupportedGroupingException {
 		// Ignore it
+	}
+	
+	@Override
+	public void initialize(Properties properties) {
+		// nothing to initialize
 	}
 }
